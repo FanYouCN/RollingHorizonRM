@@ -44,11 +44,9 @@ def prob_alloc(aRH, astar, aalphab, aalphad):
     for m in aRH.mcM:
         for n in aRH.mcN:
             Astar[m,n] = math.floor(astar[1,m,n])
-    print aalphad
     for k in Astar.keys():
         if Astar[k] >0:
-            print k, Astar[k]
-    print "------------------------------------------------------"
+            print(k, Astar[k])
     if len(res) == 0:
         return Astar
     coefs, permus = zip(*res)
@@ -61,7 +59,7 @@ def prob_alloc(aRH, astar, aalphab, aalphad):
                     Astar[m,n] += Chat[m] * Dhat[n]
     for k in Astar.keys():
         if Astar[k] >0:
-            print k, Astar[k]
+            print(k, Astar[k])
     return 0
 
 if __name__ == '__main__':

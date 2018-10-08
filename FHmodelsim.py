@@ -156,6 +156,6 @@ if __name__ == "__main__":
     init_d = aRH.getdemandsample()
     n_samplesteps = int(math.ceil(-6.0 / np.log10(aRH.beta)))
     afhsp = FhModelSim(aRH, 50, n_samplesteps)
-    print afhsp.get_samplepath_primal(init_b, init_d)
-    print afhsp.get_samplepath_primal_prob(init_b, init_d)
-    print "-------------------"
+    # print afhsp.get_samplepath_primal(init_b, init_d)
+    # print afhsp.get_samplepath_primal_prob(init_b, init_d)
+    # print "-------------------"

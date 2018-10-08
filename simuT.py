@@ -5,6 +5,7 @@ from RHdata import RHinstance
 from FHmodelsim import FhModelSim
 from FHmodel import FhModel
 from MFHmodel import MFhModel
+from datetime import datetime
 import time
 
 
@@ -32,7 +33,7 @@ def get_minT(aRH, aalphab, aalphad):
         T += 1
 
 
-n_samples = 100
+n_samples = 10
 beta = 0.95
 n_samplesteps = int(math.ceil(-6.0 / np.log10(beta)))
 load_samples = [0.6, 1.0, 1.5, 2.0, 3.0, 6.0]
@@ -42,16 +43,17 @@ mcT_max = range(1, T_max + 1)
 
 
 def run_greedy():
-    grdfile = open('results/GRD.txt', 'w')
+    outfile = open("results/GRD.txt", "w")
     for i in range(len(load_samples)):
         rhinstance = RHinstance(beta, load_samples[i])
         alpha_b, alpha_d = rhinstance.getsamples(n_samples)
         lb = []
         lb = Parallel(n_jobs=-1, verbose=0)(delayed(get_greedy_bounds)(rhinstance, n_samplesteps, alpha_b[sp], alpha_d[sp]) for sp in range(n_samples))
         lb_mean = np.mean(lb, axis=0)
-        print 'GRD.txt', ',', beta, ',', load_samples[i],  ',', lb_mean
-        print >> grdfile, beta, ',', load_samples[i], ',', lb_mean
-    grdfile.close()
+        outStr = str(beta) + ',  ' + str(load_samples[i]) + ',  ' + str(int(lb_mean))
+        print(outStr)
+        print(outStr, file=outfile)
+    outfile.close()
 
 def run_primal_prob():
     outfile = open('results/FIN_PP.txt', 'w')
@@ -62,8 +64,9 @@ def run_primal_prob():
             lb = []
             lb = Parallel(n_jobs=-1, verbose=0)(delayed(get_primal_prob_bounds)(rhinstance, t, n_samplesteps, alpha_b[sp], alpha_d[sp]) for sp in range(n_samples))
             lb_mean = np.mean(lb, axis=0)
-            print 'FIN_PP.txt', ',', beta, ',', load_samples[i], ',', t, ',', lb_mean
-            print >> outfile, beta, ',', load_samples[i], ',', t, ',', lb_mean
+            outStr = str(beta) + ',  ' + str(load_samples[i]) + ',  ' + str(t) + ',  ' + str(int(lb_mean))
+            print(outStr)
+            print(outStr, file=outfile)
     outfile.close()
 
 def run_simu(primal_yn, resolve_yn):
@@ -82,8 +85,9 @@ def run_simu(primal_yn, resolve_yn):
             lb = []
             lb = Parallel(n_jobs=-1, verbose=0)(delayed(get_samplepathbounds)(rhinstance, t, n_samplesteps, resolve_yn, primal_yn, alpha_b[sp], alpha_d[sp]) for sp in range(n_samples))
             lb_mean = np.mean(lb, axis=0)
-            print filepath, ',', beta, ',', load_samples[i], ',', t, ',', lb_mean[0]
-            print >> outfile, beta, ',', load_samples[i], ',', t, ',', lb_mean[0]
+            outStr = str(beta) + ',  ' + str(load_samples[i]) + ',  ' + str(t) + ',  ' + str(int(lb_mean[0]))
+            print(outStr)
+            print(outStr, file=outfile)
     outfile.close()
 
 def run_minT():
@@ -94,5 +98,5 @@ def run_minT():
         minT = []
         minT = Parallel(n_jobs=-1, verbose=0)(delayed(get_minT)(rhinstance, alpha_b[sp], alpha_d[sp]) for sp in range(n_samples))
         for t in minT:
-            print >> outfile, beta, ',', load_samples[i], ',', t
+            print(str(beta) + ',  ' + str(load_samples[i]) + ',  ' + str(t), file=outfile)
     outfile.close()

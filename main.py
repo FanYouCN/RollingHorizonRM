@@ -9,4 +9,4 @@ if __name__ == "__main__":
     simuT.run_simu(1, 1)
     simuT.run_primal_prob()
     # simuT.run_minT()
-    print time.time() - t
+    print(time.time() - t)

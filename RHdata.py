@@ -68,7 +68,7 @@ class RHinstance:
             for m in self.mcM:
                 output_string += str(self.v[m, n]) + ","
             print("\n")
-        print output_string
+        print(output_string)
 
     def gettransition(self, ab, aa):
         nb = {}

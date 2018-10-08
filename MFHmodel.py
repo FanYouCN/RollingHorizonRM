@@ -76,4 +76,4 @@ if __name__ == '__main__':
             if aMFh.solve() != "Infeasible":
                 return T
             T += 1
-    print get_minT(aRH, init_b, init_d)
+    print(get_minT(aRH, init_b, init_d))
